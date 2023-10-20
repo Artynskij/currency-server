@@ -14,7 +14,7 @@ import { CONSTANS__NAMES_BANKS } from 'src/asset/utils/isoBanks';
 import { IRateInBd, IResponseAxios } from 'src/asset/types/commonTypes';
 import { getBelarusbankRank } from 'src/asset/getRank/Belarusbank/belarusbankRank';
 import { getDabrabytRank } from 'src/asset/getRank/Dabrabyt/dabrabytRank';
-import { getRRBRank } from 'src/asset/getRank/RRB/rrbRank';
+import { getRRBRank } from 'src/asset/getRank/RRB/RRBRank';
 import { IRankResponceByn } from './types/rankResponce.type';
 
 @Injectable()

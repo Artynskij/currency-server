@@ -6,7 +6,7 @@ import {
   IResponseAxios,
 } from '../../types/commonTypes';
 import { XmlToJs } from '../xmlToJs';
-import { IRRBItem } from './rrb.type';
+import { IRRBItem } from './RRB.type';
 // import { IAlfaResponce } from './alfaBank.type';
 
 export const getRRBRank = async (codename: string): Promise<IResponseAxios> => {
