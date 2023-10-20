@@ -14,7 +14,11 @@ async function bootstrap() {
 
   app.enableCors({
     credentials: true,
-    origin: ['http://127.0.0.1:5500', 'https://shop-client-ijcw.onrender.com'],
+    origin: [
+      'http://127.0.0.1:5500',
+      'https://shop-client-ijcw.onrender.com',
+      'https://allnews.kz',
+    ],
   });
   await app.listen(3000);
 }
