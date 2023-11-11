@@ -117,11 +117,11 @@ export class RankService {
     // const parcingData = await parcingMyfin();
     // return await parcingMyfin();
     return [
-      await this.updateRates(getAlfaRank, CONSTANS__NAMES_BANKS.ALFA),
-      await this.updateRates(
-        getBelarusbankRank,
-        CONSTANS__NAMES_BANKS.BELARUSBANK,
-      ),
+      // await this.updateRates(getAlfaRank, CONSTANS__NAMES_BANKS.ALFA),
+      // await this.updateRates(
+      //   getBelarusbankRank,
+      //   CONSTANS__NAMES_BANKS.BELARUSBANK,
+      // ),
       await this.updateRates(getDabrabytRank, CONSTANS__NAMES_BANKS.DABRABYT),
       await this.updateRates(getRRBRank, CONSTANS__NAMES_BANKS.RRB),
       await this.updateRates(getBelagroRank, CONSTANS__NAMES_BANKS.BELAGRO),
