@@ -34,7 +34,7 @@ export class RankService {
   @Cron('45 35 * * * *')
   async handleCron() {
     const responce = await this.callingUpdateRates();
-    console.log(responce);
+    console.log('auto update');
   }
   async create(createRankDto: CreateRankDto): Promise<Rank> {
     if (!createRankDto.buyrate && !createRankDto.selrate) {
@@ -116,12 +116,12 @@ export class RankService {
   async callingUpdateRates() {
     // const parcingData = await parcingMyfin();
     // return await parcingMyfin();
-    return [
-      // await this.updateRates(getAlfaRank, CONSTANS__NAMES_BANKS.ALFA),
-      // await this.updateRates(
-      //   getBelarusbankRank,
-      //   CONSTANS__NAMES_BANKS.BELARUSBANK,
-      // ),
+    const returnerArray = [
+      await this.updateRates(getAlfaRank, CONSTANS__NAMES_BANKS.ALFA),
+      await this.updateRates(
+        getBelarusbankRank,
+        CONSTANS__NAMES_BANKS.BELARUSBANK,
+      ),
       await this.updateRates(getDabrabytRank, CONSTANS__NAMES_BANKS.DABRABYT),
       await this.updateRates(getRRBRank, CONSTANS__NAMES_BANKS.RRB),
       await this.updateRates(getBelagroRank, CONSTANS__NAMES_BANKS.BELAGRO),
@@ -134,6 +134,9 @@ export class RankService {
       // await getBelagroRank(CONSTANS__NAMES_BANKS.BELAGRO),
       // await parcingMyfin(),
     ];
+    console.log(returnerArray);
+
+    return returnerArray;
   }
 
   async updateRates(getFunc, codeName: string) {
