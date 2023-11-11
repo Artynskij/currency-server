@@ -1,11 +1,11 @@
-import { requestAxiosBank } from '../../axios';
+import { requestAxiosBank } from '../../../axios';
 
 import { IBelarusbankItem } from './belarusbank.type';
 import {
   IMessageStatus,
   IRateInBd,
   IResponseAxios,
-} from '../../types/commonTypes';
+} from '../../../types/commonTypes';
 import { CONSTANS__TYPE_MONEY } from 'src/asset/utils/isoBanks';
 
 export const getBelarusbankRank = async (

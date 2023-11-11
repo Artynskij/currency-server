@@ -1,11 +1,11 @@
 import { CONSTANS__TYPE_MONEY } from 'src/asset/utils/isoBanks';
-import { requestAxiosBank } from '../../axios';
+import { requestAxiosBank } from '../../../axios';
 import {
   IMessageStatus,
   IRateInBd,
   IResponseAxios,
-} from '../../types/commonTypes';
-import { XmlToJs } from '../xmlToJs';
+} from '../../../types/commonTypes';
+import { XmlToJs } from '../../xmlToJs';
 import { IDabrabytItem } from './dabrabyt.type';
 // import { IAlfaResponce } from './alfaBank.type';
 

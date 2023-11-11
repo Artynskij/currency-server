@@ -14,7 +14,7 @@ import { UpdateRankDto } from './dto/update-rank.dto';
 @Controller('rank')
 export class RankController {
   constructor(private readonly rankService: RankService) {}
-  @Get('/updatesAll')
+  @Get('/updatesall')
   updateActualRates() {
     return this.rankService.callingUpdateRates();
   }

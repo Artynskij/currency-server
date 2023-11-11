@@ -20,6 +20,6 @@ async function bootstrap() {
       'https://allnews.kz',
     ],
   });
-  await app.listen(3000);
+  await app.listen(3052);
 }
 bootstrap();

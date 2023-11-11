@@ -1,6 +1,6 @@
-import { requestAxiosBank } from '../../axios';
+import { requestAxiosBank } from '../../../axios';
 
-import { IMessageStatus, IRateInBd } from '../../types/commonTypes';
+import { IMessageStatus, IRateInBd } from '../../../types/commonTypes';
 import { IAlfaResponce } from './alfaBank.type';
 
 export const getAlfaRank = async (codename: string) => {
