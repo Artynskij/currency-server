@@ -31,7 +31,7 @@ export class RankService {
     private rankModel: typeof Rank,
     private readonly bankService: BankService,
   ) {}
-  @Cron('45 * * * * *')
+  @Cron('45 35 * * * *')
   async handleCron() {
     const responce = await this.callingUpdateRates();
     console.log(responce);
