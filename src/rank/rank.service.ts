@@ -112,6 +112,10 @@ export class RankService {
       'parcing',
     );
 
+    if (!returrequestParcingMyfin.error) {
+      return returrequestParcingMyfin;
+    }
+
     const requestApi = await Promise.all(
       getRankBank().map(async (bank) => {
         const res = await this.updateRates(bank.func, bank.name);
@@ -119,7 +123,7 @@ export class RankService {
       }),
     );
 
-    return returrequestParcingMyfin;
+    return requestApi;
   }
 
   async updateRates(getFunc, codeName: string) {
