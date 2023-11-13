@@ -7,22 +7,11 @@ import { CreateRankDto } from './dto/create-rank.dto';
 import { UpdateRankDto } from './dto/update-rank.dto';
 
 import { Rank } from './entities/rank.entity';
-import { Bank } from 'src/bank/entities/bank.entity';
 
-import { getAlfaRank } from 'src/asset/getRank/apiBank/Alfa/alfaRank';
-import { CONSTANS__NAMES_BANKS } from 'src/asset/utils/isoBanks';
 import { IRateInBd, IResponseAxios } from 'src/asset/types/commonTypes';
-import { getBelarusbankRank } from 'src/asset/getRank/apiBank/Belarusbank/belarusbankRank';
-import { getDabrabytRank } from 'src/asset/getRank/apiBank/Dabrabyt/dabrabytRank';
-import { getRRBRank } from 'src/asset/getRank/apiBank/RRB/RRBRank';
-import { IRankResponceByn } from './types/rankResponce.type';
-import { getBelagroRank } from 'src/asset/getRank/apiBank/Belagro/belagroRank';
-import { getReshenieRank } from 'src/asset/getRank/apiBank/Reshenie/reshenieRank';
-import { getVTBRank } from 'src/asset/getRank/apiBank/VTB/VTBRank';
-import { getMTBRank } from 'src/asset/getRank/apiBank/MTB/MTBRank';
-import { getPriorRank } from 'src/asset/getRank/apiBank/Prior/PriorRank';
-import { getBSBRank } from 'src/asset/getRank/apiBank/BSB/BSBRank';
+
 import { parcingMyfin } from 'src/asset/getRank/parcing/parcingMyfin';
+import { getRankBank } from 'src/asset/getRank';
 
 @Injectable()
 export class RankService {
@@ -52,7 +41,7 @@ export class RankService {
     const ranks = await this.rankModel.findAll({ where: { buyiso: 'BYN' } });
     const banks = await this.bankService.findAll();
     const mutationData = banks.map((item) => {
-      const banksTest = {
+      const banksRanks = {
         id: item.id,
         codename: item.codename,
         bank: item,
@@ -62,7 +51,7 @@ export class RankService {
           rub: { selrate: '', buyrate: '', dateUpdate: '' },
         },
       };
-      return banksTest;
+      return banksRanks;
     });
 
     ranks.map((item) => {
@@ -83,13 +72,17 @@ export class RankService {
         newBankData.currency.rub.buyrate = item.buyrate;
         newBankData.currency.rub.dateUpdate = item.updatedAt;
       }
-      // banksTest.push(newBankData);
       return 'pushItem';
     });
+
     const filteredMutationData = mutationData.filter(
       (item) => item.currency.eur.buyrate,
     );
-    return Promise.all(filteredMutationData);
+    const promiseData = await Promise.all(filteredMutationData);
+    return {
+      rows: promiseData.length,
+      data: promiseData,
+    };
   }
 
   async findOne(id: number): Promise<Rank> {
@@ -114,29 +107,19 @@ export class RankService {
   }
 
   async callingUpdateRates() {
-    // const parcingData = await parcingMyfin();
-    // return await parcingMyfin();
-    const returnerArray = [
-      await this.updateRates(getAlfaRank, CONSTANS__NAMES_BANKS.ALFA),
-      await this.updateRates(
-        getBelarusbankRank,
-        CONSTANS__NAMES_BANKS.BELARUSBANK,
-      ),
-      await this.updateRates(getDabrabytRank, CONSTANS__NAMES_BANKS.DABRABYT),
-      await this.updateRates(getRRBRank, CONSTANS__NAMES_BANKS.RRB),
-      await this.updateRates(getBelagroRank, CONSTANS__NAMES_BANKS.BELAGRO),
-      await this.updateRates(getReshenieRank, CONSTANS__NAMES_BANKS.RESHENIE),
-      await this.updateRates(getVTBRank, CONSTANS__NAMES_BANKS.VTB),
-      await this.updateRates(getMTBRank, CONSTANS__NAMES_BANKS.MTB),
-      await this.updateRates(getPriorRank, CONSTANS__NAMES_BANKS.PRIOR),
-      await this.updateRates(getBSBRank, CONSTANS__NAMES_BANKS.BSB),
-      await this.updateRatesParcing(parcingMyfin, 'parcing'),
-      // await getBelagroRank(CONSTANS__NAMES_BANKS.BELAGRO),
-      // await parcingMyfin(),
-    ];
-    console.log(returnerArray);
+    const returrequestParcingMyfin = await this.updateRatesParcing(
+      parcingMyfin,
+      'parcing',
+    );
 
-    return returnerArray;
+    const requestApi = await Promise.all(
+      getRankBank().map(async (bank) => {
+        const res = await this.updateRates(bank.func, bank.name);
+        return res;
+      }),
+    );
+
+    return requestApi;
   }
 
   async updateRates(getFunc, codeName: string) {
