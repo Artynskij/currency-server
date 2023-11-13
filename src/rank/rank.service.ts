@@ -119,7 +119,7 @@ export class RankService {
       }),
     );
 
-    return requestApi;
+    return returrequestParcingMyfin;
   }
 
   async updateRates(getFunc, codeName: string) {
