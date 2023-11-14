@@ -18,7 +18,7 @@ async function bootstrap() {
       'http://127.0.0.1:5500',
       'https://shop-client-ijcw.onrender.com',
       'https://allnews.kz',
-      'https://024.by/',
+      'https://024.by',
     ],
   });
   await app.listen(3052);
