@@ -13,3 +13,11 @@ http://localhost:3000/bank/addbase - добавление банков в баз
 7. .env в dist  
 8. sudo pm2 start main.js --name "main:prod" --watch - запускаем приложение
 
+
+
+Задачи: 
+1. Swagger
+2. журнал
+3. Добить парсинг банков
+4. обезопасить вторым парсингом
+

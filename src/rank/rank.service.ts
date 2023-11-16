@@ -23,7 +23,8 @@ export class RankService {
   @Cron('45 35 * * * *')
   async handleCron() {
     const responce = await this.callingUpdateRates();
-    console.log('auto update');
+    const date = new Date();
+    console.log(`auto update : ${date}`);
   }
   async create(createRankDto: CreateRankDto): Promise<Rank> {
     if (!createRankDto.buyrate && !createRankDto.selrate) {
@@ -35,6 +36,7 @@ export class RankService {
 
   async findAll() {
     const ranks = await this.rankModel.findAll();
+
     return ranks;
   }
   async findByn() {
@@ -75,9 +77,16 @@ export class RankService {
       return 'pushItem';
     });
 
-    const filteredMutationData = mutationData.filter(
-      (item) => item.currency.eur.buyrate,
-    );
+    const filteredMutationData = mutationData.filter((item) => {
+      const dateUpdated = new Date(item.currency.usd.dateUpdate);
+      const dateNow = new Date();
+      const actualDate =
+        dateNow.getDay() === dateUpdated.getDay() &&
+        dateNow.getFullYear() === dateUpdated.getFullYear() &&
+        dateNow.getMonth() === dateUpdated.getMonth();
+
+      return item.currency.eur.buyrate && actualDate;
+    });
     const promiseData = await Promise.all(filteredMutationData);
     return {
       rows: promiseData.length,
@@ -107,13 +116,14 @@ export class RankService {
   }
 
   async callingUpdateRates() {
-    const returrequestParcingMyfin = await this.updateRatesParcing(
+    const returnRequestParsingMyfin = await this.updateRatesParsing(
       parcingMyfin,
       'parcing',
     );
 
-    if (!returrequestParcingMyfin.error) {
-      return returrequestParcingMyfin;
+    if (!returnRequestParsingMyfin.error) {
+      console.log(returnRequestParsingMyfin);
+      return returnRequestParsingMyfin;
     }
 
     const requestApi = await Promise.all(
@@ -123,6 +133,8 @@ export class RankService {
       }),
     );
 
+    console.log(returnRequestParsingMyfin.error);
+    console.log(requestApi);
     return requestApi;
   }
 
@@ -151,7 +163,7 @@ export class RankService {
     });
     return getRateBank;
   }
-  async updateRatesParcing(getFunc, codeName: string) {
+  async updateRatesParsing(getFunc, codeName: string) {
     const getRateBank = await getFunc().then((res: IResponseAxios) => {
       if (res.data) {
         res.data.map(async (rate: IRateInBd) => {
@@ -168,7 +180,9 @@ export class RankService {
             await this.update(rateInBd.id, rate);
           }
         });
-        res.message.title = `${res.message.title}. And all updated`;
+        res.message.title = `${res.message.title}.`;
+        // console.log(res);
+
         return res.message.title;
       } else {
         return res.message;

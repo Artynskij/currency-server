@@ -7,6 +7,8 @@ import { CONSTANS__TYPE_MONEY } from 'src/asset/utils/isoBanks';
 const { JSDOM } = jsdom;
 
 export const parcingMyfin = async () => {
+  const updatedBanks = [];
+
   const message = {
     title: `parcingMyfin is ok. Banks: ${banksMyfin.map((item) => item.name)}`,
     error: null,
@@ -45,12 +47,15 @@ export const parcingMyfin = async () => {
           seliso: 'RUB',
           selrate: '',
         };
+
         const nodeRow = dom.window.document.querySelector(
           `#bank-row-${bank.localId}`,
         );
-        const spans = nodeRow.querySelectorAll(
+
+        const spans = nodeRow?.querySelectorAll(
           '.currencies-courses__currency-cell',
         );
+        if (!spans) return;
         const spansText: string[] = [];
         spans.forEach((item, index) => {
           switch (index) {
@@ -83,13 +88,28 @@ export const parcingMyfin = async () => {
       }
 
       const returnedRates = [];
-      banksMyfin.map((item) => returnedRates.push(...getRankRow(item)));
-      // banksMyfin.map((item) => getRankRow(item));
+      banksMyfin.map((item) => {
+        const newItem = getRankRow(item);
+        if (!newItem) return;
+
+        updatedBanks.push(newItem[0].codename);
+        returnedRates.push(...newItem);
+      });
+
+      const notUpdatedBanks = banksMyfin.filter((falseItem) => {
+        return !updatedBanks.find((item) => item === falseItem.name);
+      });
+      if (notUpdatedBanks) {
+        message.title = `parcingMyfin is ok. Banks updated: ${updatedBanks.map(
+          (item) => item,
+        )}. Banks not updated ${notUpdatedBanks.map((item) => item.name)}`;
+      } // в случае ошибок определнных банков
+
       return returnedRates;
     })
     .catch((err) => {
-      console.log('error parcing');
-      message.title = 'error parcing';
+      console.log('error parsing');
+      message.title = 'error parsing';
       message.error = err;
     });
 
