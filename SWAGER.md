@@ -9,9 +9,9 @@ http://localhost:3000/bank/addbase - добавление банков в баз
 3. git pull - После Запулить на сервере. 
 4. npm run start:dev - и сбилдидь заново в папке с проектом. должно обновиться
 5. pm2 delete main:prod - удаляем прошлый запуск
-6. cd dist - заходим в папку с билдом
+<!-- 6. cd dist - заходим в папку с билдом -->
 7. .env в dist  
-8. sudo pm2 start main.js --name "main:prod" --watch - запускаем приложение
+8. sudo pm2 start dist/main.js --name "main:prod" --watch - запускаем приложение
 
 
 

@@ -20,7 +20,7 @@ export class RankService {
     private rankModel: typeof Rank,
     private readonly bankService: BankService,
   ) {}
-  @Cron('45 35 * * * *')
+  @Cron('0 0,10,20,30,40,50 * * * *')
   async handleCron() {
     const responce = await this.callingUpdateRates();
     const date = new Date();
