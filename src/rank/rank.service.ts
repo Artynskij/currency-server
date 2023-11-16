@@ -20,9 +20,9 @@ export class RankService {
     private rankModel: typeof Rank,
     private readonly bankService: BankService,
   ) {}
-  @Cron('0 0,10,20,30,40,50 * * * *')
+  @Cron('0 0,15,20,30,40,50 * * * *')
   async handleCron() {
-    const responce = await this.callingUpdateRates();
+    const response = await this.callingUpdateRates();
     const date = new Date();
     console.log(`auto update : ${date}`);
   }
@@ -112,6 +112,8 @@ export class RankService {
   }
 
   remove(id: number) {
+    console.log('deleteeqweqweqweqweq');
+
     return `This action removes a #${id} rank`;
   }
 
