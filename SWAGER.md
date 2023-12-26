@@ -15,6 +15,13 @@ http://localhost:3000/bank/addbase - добавление банков в баз
 
 
 
+Для деплоя: 
+
+
+
+для начала работы нужно вызвать эндопинт : /bank/addbase
+после : /rank/updatesall
+
 Задачи: 
 1. Swagger
 2. журнал

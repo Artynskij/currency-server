@@ -1,27 +1,24 @@
-import { CONSTANS__TYPE_MONEY } from 'src/asset/utils/isoBanks';
-import { IVTBItem } from './VTB.type';
+import axios from 'axios';
 import { requestAxiosBank } from '../../axios';
-import {
-  IMessageStatus,
-  IRateInBd,
-  IResponseAxios,
-} from '../../../types/commonTypes';
-import { XmlToJs } from '../../xmlToJs';
 
-// import { IAlfaResponce } from './alfaBank.type';
+import { IMessageStatus, IRateInBd } from '../../../types/commonTypes';
 
-export const getVTBRank = async (codename: string): Promise<IResponseAxios> => {
+import { CONSTANS__TYPE_MONEY } from 'src/asset/utils/isoBanks';
+import { ISberResponce } from './sber.type';
+
+export const getSberRank = async (codename: string) => {
   const statusMessage: IMessageStatus = {
     title: `${codename} all ok`,
     error: null,
   };
+  // const period = new Date().getTime();
   const data = await requestAxiosBank({
-    url: 'https://www.vtb.by/sites/default/files/rates.xml',
+    url: 'https://www.sber-bank.by/rates/rates.json',
   })
-    .then((res) => XmlToJs(res).rates.main.rate)
-    .then((res: IVTBItem[]) => {
-      // return res;
-      const transformData = res.map((item) => {
+    .then((res) => res.find((item) => item['ratescard']).ratescard.data)
+    .then((res: ISberResponce) => {
+      statusMessage.title = `${codename} all ok`;
+      const transformData = res.rates.list.map((item) => {
         const newData: IRateInBd = {
           codename: '',
           buyiso: '',
@@ -33,42 +30,47 @@ export const getVTBRank = async (codename: string): Promise<IResponseAxios> => {
           address: 'main',
           type: 'main',
         };
-        switch (item.code._text) {
-          case 'eur':
+        // if (item.codeTo._text === 'BYN' && item.cacheless._text === '0') {
+        switch (item.iso) {
+          case 'EUR':
             newData.codename = codename;
             newData.name = CONSTANS__TYPE_MONEY.EUR;
             newData.quantity = 1;
             newData.buyiso = 'BYN';
-            newData.buyrate = item.sell._text;
-            newData.seliso = 'EUR';
-            newData.selrate = item.buy._text;
+            newData.buyrate = item.sale.toLocaleString();
+            newData.seliso = item.iso;
+            newData.selrate = item.buy.toLocaleString();
             break;
-          case 'usd':
+          case 'USD':
             newData.codename = codename;
             newData.name = CONSTANS__TYPE_MONEY.USD;
             newData.quantity = 1;
             newData.buyiso = 'BYN';
-            newData.buyrate = item.sell._text;
-            newData.seliso = 'USD';
-            newData.selrate = item.buy._text;
+            newData.buyrate = item.sale.toLocaleString();
+            newData.seliso = item.iso;
+            newData.selrate = item.buy.toLocaleString();
             break;
-          case 'rub':
+          case 'RUB':
             newData.codename = codename;
             newData.name = CONSTANS__TYPE_MONEY.RUB;
             newData.quantity = 100;
             newData.buyiso = 'BYN';
-            newData.buyrate = item.sell._text;
-            newData.seliso = 'RUB';
-            newData.selrate = item.buy._text;
+            newData.buyrate = item.sale.toLocaleString();
+            newData.seliso = item.iso;
+            newData.selrate = item.buy.toLocaleString();
             break;
           default:
             break;
         }
+        // }
+
         return newData;
       });
       return transformData.filter((item) => item.codename);
     })
     .catch((err) => {
+      console.log(err);
+
       statusMessage.title = `${codename} something happens`;
       statusMessage.error = err;
     });

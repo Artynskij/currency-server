@@ -1,5 +1,5 @@
 import { CONSTANS__TYPE_MONEY } from 'src/asset/utils/isoBanks';
-import { requestAxiosBank } from '../../../axios';
+import { requestAxiosBank } from '../../axios';
 import {
   IMessageStatus,
   IRateInBd,
@@ -28,6 +28,8 @@ export const getRRBRank = async (codename: string): Promise<IResponseAxios> => {
           quantity: 0,
           seliso: '',
           selrate: '',
+          address: 'main',
+          type: 'main',
         };
         switch (item._attributes.iso) {
           case 'EUR':

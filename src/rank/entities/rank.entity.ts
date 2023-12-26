@@ -16,4 +16,8 @@ export class Rank extends Model {
   quantity: number;
   @Column
   name: string;
+  @Column
+  type: string;
+  @Column
+  address: string;
 }

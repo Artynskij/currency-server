@@ -21,13 +21,13 @@ export class BankService {
       });
 
       if (!haveInDB) {
-        addedBanks.push(haveInDB);
         await this.bankModel.create(item);
+        addedBanks.push(item);
       }
     });
     await Promise.all(checkBanks);
     if (addedBanks.length === 0) {
-      message = `Something happens. Our bd have some bank. We are added ${addedBanks.length}`;
+      message = `We are added ${addedBanks.length}`;
     } else {
       message = 'all mock banks imports';
     }

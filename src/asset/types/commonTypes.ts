@@ -13,6 +13,8 @@ export interface IRateInBd {
   name: string | null;
   selrate: string;
   seliso: string;
+  type: string;
+  address: string;
 }
 
 export interface IMessageStatus {

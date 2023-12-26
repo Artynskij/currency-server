@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { requestAxiosBank } from '../../../axios';
+import { requestAxiosBank } from '../../axios';
 
 import { IMessageStatus, IRateInBd } from '../../../types/commonTypes';
 import { IBSBResponce } from './BSB.type';
@@ -44,6 +44,8 @@ export const getBSBRank = async (codename: string) => {
           quantity: 1,
           seliso: 'EUR',
           selrate: eurObj.buyAmount.toString(),
+          address: 'main',
+          type: 'main',
         },
         {
           codename: codename,
@@ -53,6 +55,8 @@ export const getBSBRank = async (codename: string) => {
           quantity: 1,
           seliso: 'USD',
           selrate: usdObj.buyAmount.toString(),
+          address: 'main',
+          type: 'main',
         },
         {
           codename: codename,
@@ -62,6 +66,8 @@ export const getBSBRank = async (codename: string) => {
           quantity: 100,
           seliso: 'RUB',
           selrate: (rubObj.buyAmount * 100).toString(),
+          address: 'main',
+          type: 'main',
         },
       ];
       return returnedData;

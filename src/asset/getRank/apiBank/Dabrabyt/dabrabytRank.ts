@@ -1,5 +1,5 @@
 import { CONSTANS__TYPE_MONEY } from 'src/asset/utils/isoBanks';
-import { requestAxiosBank } from '../../../axios';
+import { requestAxiosBank } from '../../axios';
 import {
   IMessageStatus,
   IRateInBd,
@@ -30,6 +30,8 @@ export const getDabrabytRank = async (
           quantity: 0,
           seliso: ' ',
           selrate: ' ',
+          address: 'main',
+          type: 'main',
         };
         switch (item._attributes.iso) {
           case 'EUR':
@@ -59,33 +61,33 @@ export const getDabrabytRank = async (
             newData.seliso = item._attributes.iso;
             newData.selrate = (+item._attributes.buy * 100).toString();
             break;
-          case 'USD/EUR':
-            newData.codename = codename;
-            newData.name = null;
-            newData.quantity = 1;
-            newData.buyiso = 'USD';
-            newData.buyrate = item._attributes.buy;
-            newData.seliso = 'EUR';
-            newData.selrate = item._attributes.sale;
-            break;
-          case 'EUR/RUB':
-            newData.codename = codename;
-            newData.name = null;
-            newData.quantity = 1;
-            newData.buyiso = 'RUS';
-            newData.buyrate = item._attributes.sale;
-            newData.seliso = 'EUR';
-            newData.selrate = item._attributes.buy;
-            break;
-          case 'USD/RUB':
-            newData.codename = codename;
-            newData.name = null;
-            newData.quantity = 1;
-            newData.buyiso = 'RUS';
-            newData.buyrate = item._attributes.sale;
-            newData.seliso = 'USD';
-            newData.selrate = item._attributes.buy;
-            break;
+          // case 'USD/EUR':
+          //   newData.codename = codename;
+          //   newData.name = null;
+          //   newData.quantity = 1;
+          //   newData.buyiso = 'USD';
+          //   newData.buyrate = item._attributes.buy;
+          //   newData.seliso = 'EUR';
+          //   newData.selrate = item._attributes.sale;
+          //   break;
+          // case 'EUR/RUB':
+          //   newData.codename = codename;
+          //   newData.name = null;
+          //   newData.quantity = 1;
+          //   newData.buyiso = 'RUS';
+          //   newData.buyrate = item._attributes.sale;
+          //   newData.seliso = 'EUR';
+          //   newData.selrate = item._attributes.buy;
+          //   break;
+          // case 'USD/RUB':
+          //   newData.codename = codename;
+          //   newData.name = null;
+          //   newData.quantity = 1;
+          //   newData.buyiso = 'RUS';
+          //   newData.buyrate = item._attributes.sale;
+          //   newData.seliso = 'USD';
+          //   newData.selrate = item._attributes.buy;
+          //   break;
           default:
             break;
         }

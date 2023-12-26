@@ -1,12 +1,12 @@
 import axios from 'axios';
 
-import jsdom = require('jsdom');
 import { banksMyfin } from './utils';
 import { IRateInBd } from 'src/asset/types/commonTypes';
 import { CONSTANS__TYPE_MONEY } from 'src/asset/utils/isoBanks';
+import jsdom = require('jsdom');
 const { JSDOM } = jsdom;
 
-export const parcingMyfin = async () => {
+export const parsingMyfin = async () => {
   const updatedBanks = [];
 
   const message = {
@@ -19,7 +19,7 @@ export const parcingMyfin = async () => {
       const currentPage = res.data; // Запись полученного результата
       const dom = new JSDOM(currentPage);
 
-      function getRankRow(bank: { localId: number; name: string }) {
+      function getRankRowMain(bank: { localId: number; name: string }) {
         const newDataUSD: IRateInBd = {
           codename: bank.name,
           buyiso: 'BYN',
@@ -28,6 +28,8 @@ export const parcingMyfin = async () => {
           quantity: 1,
           seliso: 'USD',
           selrate: '',
+          address: 'main',
+          type: 'main',
         };
         const newDataEUR: IRateInBd = {
           codename: bank.name,
@@ -37,6 +39,8 @@ export const parcingMyfin = async () => {
           quantity: 1,
           seliso: 'EUR',
           selrate: '',
+          address: 'main',
+          type: 'main',
         };
         const newDataRUB: IRateInBd = {
           codename: bank.name,
@@ -46,6 +50,8 @@ export const parcingMyfin = async () => {
           quantity: 100,
           seliso: 'RUB',
           selrate: '',
+          address: 'main',
+          type: 'main',
         };
 
         const nodeRow = dom.window.document.querySelector(
@@ -86,14 +92,81 @@ export const parcingMyfin = async () => {
         });
         return [newDataUSD, newDataEUR, newDataRUB];
       }
-
+      function getRankFilials(bank: { localId: number; name: string }) {
+        const returnedDataFilials = [];
+        // нахождение главного блока
+        const nodeBlockFilials = dom.window.document
+          .querySelector(`#filial-row-${bank.localId}`)
+          .querySelector('tbody');
+        const nodeRows = nodeBlockFilials?.querySelectorAll('tr');
+        // формирование курсов на линии филиала
+        nodeRows.forEach((nodeRow) => {
+          const newDataUSD: IRateInBd = {
+            codename: bank.name,
+            buyiso: 'BYN',
+            buyrate: '',
+            name: CONSTANS__TYPE_MONEY.USD,
+            quantity: 1,
+            seliso: 'USD',
+            selrate: '',
+            address: '',
+            type: 'filial',
+          };
+          const newDataEUR: IRateInBd = {
+            codename: bank.name,
+            buyiso: 'BYN',
+            buyrate: '',
+            name: CONSTANS__TYPE_MONEY.EUR,
+            quantity: 1,
+            seliso: 'EUR',
+            selrate: '',
+            address: '',
+            type: 'filial',
+          };
+          const newDataRUB: IRateInBd = {
+            codename: bank.name,
+            buyiso: 'BYN',
+            buyrate: '',
+            name: CONSTANS__TYPE_MONEY.RUB,
+            quantity: 100,
+            seliso: 'RUB',
+            selrate: '',
+            address: '',
+            type: 'filial',
+          };
+          newDataUSD.address = nodeRow.querySelector(
+            '.currencies-courses__branch-name',
+          ).innerHTML;
+          newDataEUR.address = nodeRow.querySelector(
+            '.currencies-courses__branch-name',
+          ).innerHTML;
+          newDataRUB.address = nodeRow.querySelector(
+            '.currencies-courses__branch-name',
+          ).innerHTML;
+          const ranksOfRow = nodeRow.querySelectorAll(
+            '.currencies-courses__currency-cell',
+          );
+          newDataUSD.buyrate = ranksOfRow[0].querySelector('span').innerHTML;
+          newDataUSD.selrate = ranksOfRow[1].querySelector('span').innerHTML;
+          newDataEUR.buyrate = ranksOfRow[2].querySelector('span').innerHTML;
+          newDataEUR.selrate = ranksOfRow[3].querySelector('span').innerHTML;
+          newDataRUB.buyrate = ranksOfRow[4].querySelector('span').innerHTML;
+          newDataRUB.selrate = ranksOfRow[5].querySelector('span').innerHTML;
+          returnedDataFilials.push(newDataUSD);
+          returnedDataFilials.push(newDataEUR);
+          returnedDataFilials.push(newDataRUB);
+        });
+        return returnedDataFilials;
+      }
       const returnedRates = [];
-      banksMyfin.map((item) => {
-        const newItem = getRankRow(item);
-        if (!newItem) return;
 
+      banksMyfin.map((item) => {
+        const newItem = getRankRowMain(item);
+        const newItemFilial = getRankFilials(item);
+        if (!newItem) return;
         updatedBanks.push(newItem[0].codename);
         returnedRates.push(...newItem);
+        returnedRates.push(...newItemFilial);
       });
 
       const notUpdatedBanks = banksMyfin.filter((falseItem) => {

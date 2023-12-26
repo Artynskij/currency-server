@@ -1,5 +1,5 @@
 import { CONSTANS__TYPE_MONEY } from 'src/asset/utils/isoBanks';
-import { requestAxiosBank } from '../../../axios';
+import { requestAxiosBank } from '../../axios';
 import { IBelarusbankItem } from '../Belarusbank/belarusbank.type';
 import {
   IMessageStatus,
@@ -38,6 +38,8 @@ export const getBelagroRank = async (codename: string) => {
           quantity: 0,
           seliso: '',
           selrate: '',
+          address: 'main',
+          type: 'main',
         };
         switch (item.CharCode._text) {
           case 'EUR':
@@ -67,33 +69,33 @@ export const getBelagroRank = async (codename: string) => {
             newData.seliso = item.CharCode._text;
             newData.selrate = item.RateBuy._text;
             break;
-          case 'USD(RUB)':
-            newData.codename = codename;
-            newData.name = null;
-            newData.quantity = 1;
-            newData.buyiso = 'USD';
-            newData.buyrate = item.RateSell._text;
-            newData.seliso = 'EUR';
-            newData.selrate = item.RateBuy._text;
-            break;
-          case 'EUR(RUB)':
-            newData.codename = codename;
-            newData.name = null;
-            newData.quantity = 1;
-            newData.buyiso = 'RUS';
-            newData.buyrate = item.RateSell._text;
-            newData.seliso = 'EUR';
-            newData.selrate = item.RateBuy._text;
-            break;
-          case 'USD/RUB':
-            newData.codename = codename;
-            newData.name = null;
-            newData.quantity = 1;
-            newData.buyiso = 'RUS';
-            newData.buyrate = item.RateSell._text;
-            newData.seliso = 'USD';
-            newData.selrate = item.RateBuy._text;
-            break;
+          // case 'USD(RUB)':
+          //   newData.codename = codename;
+          //   newData.name = null;
+          //   newData.quantity = 1;
+          //   newData.buyiso = 'USD';
+          //   newData.buyrate = item.RateSell._text;
+          //   newData.seliso = 'EUR';
+          //   newData.selrate = item.RateBuy._text;
+          //   break;
+          // case 'EUR(RUB)':
+          //   newData.codename = codename;
+          //   newData.name = null;
+          //   newData.quantity = 1;
+          //   newData.buyiso = 'RUS';
+          //   newData.buyrate = item.RateSell._text;
+          //   newData.seliso = 'EUR';
+          //   newData.selrate = item.RateBuy._text;
+          //   break;
+          // case 'USD/RUB':
+          //   newData.codename = codename;
+          //   newData.name = null;
+          //   newData.quantity = 1;
+          //   newData.buyiso = 'RUS';
+          //   newData.buyrate = item.RateSell._text;
+          //   newData.seliso = 'USD';
+          //   newData.selrate = item.RateBuy._text;
+          //   break;
           default:
             break;
         }

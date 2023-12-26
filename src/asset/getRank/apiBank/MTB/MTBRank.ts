@@ -1,5 +1,5 @@
 import { CONSTANS__TYPE_MONEY } from 'src/asset/utils/isoBanks';
-import { requestAxiosBank } from '../../../axios';
+import { requestAxiosBank } from '../../axios';
 import { IBelarusbankItem } from '../Belarusbank/belarusbank.type';
 import {
   IMessageStatus,
@@ -32,6 +32,8 @@ export const getMTBRank = async (codename: string) => {
           quantity: 0,
           seliso: '',
           selrate: '',
+          address: 'main',
+          type: 'main',
         };
         if (item.codeTo._text === 'BYN' && item.cacheless._text === '0') {
           switch (item.code._text) {

@@ -1,5 +1,5 @@
 import { CONSTANS__TYPE_MONEY } from 'src/asset/utils/isoBanks';
-import { requestAxiosBank } from '../../../axios';
+import { requestAxiosBank } from '../../axios';
 import { IBelarusbankItem } from '../Belarusbank/belarusbank.type';
 import {
   IMessageStatus,
@@ -31,6 +31,8 @@ export const getReshenieRank = async (
         quantity: 1,
         seliso: 'EUR',
         selrate: '',
+        address: 'main',
+        type: 'main',
       };
       const transformDataUSD: IRateInBd = {
         codename: codename,
@@ -40,6 +42,8 @@ export const getReshenieRank = async (
         quantity: 1,
         seliso: 'USD',
         selrate: '',
+        address: 'main',
+        type: 'main',
       };
       const transformDataRUB: IRateInBd = {
         codename: codename,
@@ -49,6 +53,8 @@ export const getReshenieRank = async (
         quantity: 100,
         seliso: 'RUB',
         selrate: '',
+        address: 'main',
+        type: 'main',
       };
 
       res.map((item) => {

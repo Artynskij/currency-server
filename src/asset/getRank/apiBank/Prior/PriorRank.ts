@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { requestAxiosBank } from '../../../axios';
+import { requestAxiosBank } from '../../axios';
 
 import { IMessageStatus, IRateInBd } from '../../../types/commonTypes';
 import { IPriorItem, IPriorResponce, IPriorToken } from './Prior.type';
@@ -17,6 +17,8 @@ const getTokenPrior = async () => {
     headers: { 'content-type': 'application/x-www-form-urlencoded' },
     data: body,
   });
+  console.log(responce);
+
   return responce.data;
 };
 
@@ -59,6 +61,8 @@ export const getPriorRank = async (codename: string) => {
           quantity: 1,
           seliso: 'EUR',
           selrate: eurObj.rate.buyRate.toString(),
+          address: 'main',
+          type: 'main',
         },
         {
           codename: codename,
@@ -68,6 +72,8 @@ export const getPriorRank = async (codename: string) => {
           quantity: 1,
           seliso: 'USD',
           selrate: usdObj.rate.buyRate.toString(),
+          address: 'main',
+          type: 'main',
         },
         {
           codename: codename,
@@ -77,6 +83,8 @@ export const getPriorRank = async (codename: string) => {
           quantity: 100,
           seliso: 'RUB',
           selrate: rubObj.rate.buyRate.toString(),
+          address: 'main',
+          type: 'main',
         },
       ];
       return returnedData;

@@ -1,5 +1,5 @@
 import axios from 'axios';
-interface IRequstAxios {
+interface IRequestAxios {
   url: string;
   method?: string;
   API_KEY?: string;
@@ -10,7 +10,7 @@ export const requestAxiosBank = async ({
   method: method,
   API_KEY: API_KEY,
   body: body,
-}: IRequstAxios) => {
+}: IRequestAxios) => {
   const { data } = await axios(url);
 
   return data;

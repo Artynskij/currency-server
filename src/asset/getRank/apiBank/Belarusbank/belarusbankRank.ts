@@ -1,4 +1,4 @@
-import { requestAxiosBank } from '../../../axios';
+import { requestAxiosBank } from '../../axios';
 
 import { IBelarusbankItem } from './belarusbank.type';
 import {
@@ -29,6 +29,8 @@ export const getBelarusbankRank = async (
           quantity: 1,
           seliso: 'EUR',
           selrate: res.EUR_in,
+          address: 'main',
+          type: 'main',
         },
         {
           codename: codeName,
@@ -38,6 +40,8 @@ export const getBelarusbankRank = async (
           quantity: 1,
           seliso: 'USD',
           selrate: res.USD_in,
+          address: 'main',
+          type: 'main',
         },
         {
           codename: codeName,
@@ -47,35 +51,43 @@ export const getBelarusbankRank = async (
           quantity: 100,
           seliso: 'RUB',
           selrate: res.RUB_in,
+          address: 'main',
+          type: 'main',
         },
-        {
-          codename: codeName,
-          buyiso: 'RUB',
-          buyrate: res.RUB_EUR_out,
-          name: null,
-          quantity: 1,
-          seliso: 'EUR',
-          selrate: (+res.RUB_EUR_in * 100).toString(),
-        },
-        {
-          codename: codeName,
-          buyiso: 'RUB',
-          buyrate: (+res.USD_RUB_out * 100).toString(),
-          name: null,
-          quantity: 1,
-          seliso: 'USD',
-          selrate: res.USD_RUB_in,
-          //somne
-        },
-        {
-          codename: codeName,
-          buyiso: 'USD',
-          buyrate: res.USD_EUR_out,
-          name: null,
-          quantity: 1,
-          seliso: 'EUR',
-          selrate: res.USD_EUR_in,
-        },
+        // {
+        //   codename: codeName,
+        //   buyiso: 'RUB',
+        //   buyrate: res.RUB_EUR_out,
+        //   name: null,
+        //   quantity: 1,
+        //   seliso: 'EUR',
+        //   selrate: (+res.RUB_EUR_in * 100).toString(),
+        //   address: 'main',
+        //   type: 'main',
+        // },
+        // {
+        //   codename: codeName,
+        //   buyiso: 'RUB',
+        //   buyrate: (+res.USD_RUB_out * 100).toString(),
+        //   name: null,
+        //   quantity: 1,
+        //   seliso: 'USD',
+        //   selrate: res.USD_RUB_in,
+        //   address: 'main',
+        //   type: 'main',
+        //   //somne
+        // },
+        // {
+        //   codename: codeName,
+        //   buyiso: 'USD',
+        //   buyrate: res.USD_EUR_out,
+        //   name: null,
+        //   quantity: 1,
+        //   seliso: 'EUR',
+        //   selrate: res.USD_EUR_in,
+        //   address: 'main',
+        //   type: 'main',
+        // },
       ];
       statusMessage.title = `${codeName} all ok`;
       return transformData;

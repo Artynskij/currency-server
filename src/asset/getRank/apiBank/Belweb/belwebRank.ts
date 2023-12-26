@@ -1,27 +1,24 @@
-import { CONSTANS__TYPE_MONEY } from 'src/asset/utils/isoBanks';
-import { IVTBItem } from './VTB.type';
+import axios from 'axios';
 import { requestAxiosBank } from '../../axios';
-import {
-  IMessageStatus,
-  IRateInBd,
-  IResponseAxios,
-} from '../../../types/commonTypes';
-import { XmlToJs } from '../../xmlToJs';
 
-// import { IAlfaResponce } from './alfaBank.type';
+import { IMessageStatus, IRateInBd } from '../../../types/commonTypes';
+import { IBelwebItem, IBelwebResponce } from './belweb.type';
+import { CONSTANS__TYPE_MONEY } from 'src/asset/utils/isoBanks';
 
-export const getVTBRank = async (codename: string): Promise<IResponseAxios> => {
+export const getBelwebRank = async (codename: string) => {
   const statusMessage: IMessageStatus = {
     title: `${codename} all ok`,
     error: null,
   };
-  const data = await requestAxiosBank({
-    url: 'https://www.vtb.by/sites/default/files/rates.xml',
+  // const period = new Date().getTime();
+  const data = await axios({
+    method: 'POST',
+    url: 'https://www.belveb.by/rates/',
   })
-    .then((res) => XmlToJs(res).rates.main.rate)
-    .then((res: IVTBItem[]) => {
-      // return res;
-      const transformData = res.map((item) => {
+    .then((res) => res.data.items[0])
+    .then((res: IBelwebResponce) => {
+      statusMessage.title = `${codename} all ok`;
+      const transformData = res.currency.map((item) => {
         const newData: IRateInBd = {
           codename: '',
           buyiso: '',
@@ -33,37 +30,40 @@ export const getVTBRank = async (codename: string): Promise<IResponseAxios> => {
           address: 'main',
           type: 'main',
         };
-        switch (item.code._text) {
-          case 'eur':
+        // if (item.codeTo._text === 'BYN' && item.cacheless._text === '0') {
+        switch (item.currency_cod) {
+          case 'EUR':
             newData.codename = codename;
             newData.name = CONSTANS__TYPE_MONEY.EUR;
             newData.quantity = 1;
             newData.buyiso = 'BYN';
-            newData.buyrate = item.sell._text;
-            newData.seliso = 'EUR';
-            newData.selrate = item.buy._text;
+            newData.buyrate = item.sale_rate.value;
+            newData.seliso = item.currency_cod;
+            newData.selrate = item.buy_rate.value;
             break;
-          case 'usd':
+          case 'USD':
             newData.codename = codename;
             newData.name = CONSTANS__TYPE_MONEY.USD;
             newData.quantity = 1;
             newData.buyiso = 'BYN';
-            newData.buyrate = item.sell._text;
-            newData.seliso = 'USD';
-            newData.selrate = item.buy._text;
+            newData.buyrate = item.sale_rate.value;
+            newData.seliso = item.currency_cod;
+            newData.selrate = item.buy_rate.value;
             break;
-          case 'rub':
+          case 'RUB':
             newData.codename = codename;
             newData.name = CONSTANS__TYPE_MONEY.RUB;
             newData.quantity = 100;
             newData.buyiso = 'BYN';
-            newData.buyrate = item.sell._text;
-            newData.seliso = 'RUB';
-            newData.selrate = item.buy._text;
+            newData.buyrate = item.sale_rate.value;
+            newData.seliso = item.currency_cod;
+            newData.selrate = item.buy_rate.value;
             break;
           default:
             break;
         }
+        // }
+
         return newData;
       });
       return transformData.filter((item) => item.codename);
