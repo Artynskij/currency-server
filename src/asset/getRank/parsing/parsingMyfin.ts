@@ -146,12 +146,13 @@ export const parsingMyfin = async () => {
           const ranksOfRow = nodeRow.querySelectorAll(
             '.currencies-courses__currency-cell',
           );
-          newDataUSD.buyrate = ranksOfRow[0].querySelector('span').innerHTML;
-          newDataUSD.selrate = ranksOfRow[1].querySelector('span').innerHTML;
-          newDataEUR.buyrate = ranksOfRow[2].querySelector('span').innerHTML;
-          newDataEUR.selrate = ranksOfRow[3].querySelector('span').innerHTML;
-          newDataRUB.buyrate = ranksOfRow[4].querySelector('span').innerHTML;
-          newDataRUB.selrate = ranksOfRow[5].querySelector('span').innerHTML;
+          newDataUSD.selrate = ranksOfRow[0].querySelector('span').innerHTML;
+          newDataUSD.buyrate = ranksOfRow[1].querySelector('span').innerHTML;
+          newDataEUR.selrate = ranksOfRow[2].querySelector('span').innerHTML;
+          newDataEUR.buyrate = ranksOfRow[3].querySelector('span').innerHTML;
+          newDataRUB.selrate = ranksOfRow[4].querySelector('span').innerHTML;
+          newDataRUB.buyrate = ranksOfRow[5].querySelector('span').innerHTML;
+
           returnedDataFilials.push(newDataUSD);
           returnedDataFilials.push(newDataEUR);
           returnedDataFilials.push(newDataRUB);
