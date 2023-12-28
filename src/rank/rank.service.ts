@@ -40,6 +40,7 @@ export class RankService {
 
     return ranks;
   }
+  // get byn
   async findByn() {
     const ranksMain = await this.rankModel.findAll({
       where: { buyiso: 'BYN' },
@@ -47,6 +48,7 @@ export class RankService {
     const banks = await this.bankService.findAll();
     const dateNow = new Date();
     // формирование [bank, bank, ...bank] моковые
+    banks.sort((a, b) => a.idbank - b.idbank);
     const mutationData = banks.map((item) => {
       const banksRanks = {
         id: item.id,

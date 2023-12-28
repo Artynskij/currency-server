@@ -16,6 +16,7 @@ async function bootstrap() {
     credentials: true,
     origin: [
       'http://127.0.0.1:5500',
+      'http://127.0.0.1:3000',
       'https://shop-client-ijcw.onrender.com',
       'https://allnews.kz',
       'https://024.by',
