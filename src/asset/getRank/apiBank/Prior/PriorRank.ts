@@ -63,6 +63,7 @@ export const getPriorRank = async (codename: string) => {
           selrate: eurObj.rate.buyRate.toString(),
           address: 'main',
           type: 'main',
+          coord: 'main',
         },
         {
           codename: codename,
@@ -74,6 +75,7 @@ export const getPriorRank = async (codename: string) => {
           selrate: usdObj.rate.buyRate.toString(),
           address: 'main',
           type: 'main',
+          coord: 'main',
         },
         {
           codename: codename,
@@ -85,6 +87,7 @@ export const getPriorRank = async (codename: string) => {
           selrate: rubObj.rate.buyRate.toString(),
           address: 'main',
           type: 'main',
+          coord: 'main',
         },
       ];
       return returnedData;

@@ -30,6 +30,7 @@ export const parsingMyfin = async () => {
           selrate: '',
           address: 'main',
           type: 'main',
+          coord: 'main',
         };
         const newDataEUR: IRateInBd = {
           codename: bank.name,
@@ -41,6 +42,7 @@ export const parsingMyfin = async () => {
           selrate: '',
           address: 'main',
           type: 'main',
+          coord: 'main',
         };
         const newDataRUB: IRateInBd = {
           codename: bank.name,
@@ -52,6 +54,7 @@ export const parsingMyfin = async () => {
           selrate: '',
           address: 'main',
           type: 'main',
+          coord: 'main',
         };
 
         const nodeRow = dom.window.document.querySelector(
@@ -111,6 +114,7 @@ export const parsingMyfin = async () => {
             selrate: '',
             address: '',
             type: 'filial',
+            coord: '',
           };
           const newDataEUR: IRateInBd = {
             codename: bank.name,
@@ -122,6 +126,7 @@ export const parsingMyfin = async () => {
             selrate: '',
             address: '',
             type: 'filial',
+            coord: '',
           };
           const newDataRUB: IRateInBd = {
             codename: bank.name,
@@ -133,16 +138,24 @@ export const parsingMyfin = async () => {
             selrate: '',
             address: '',
             type: 'filial',
+            coord: '',
           };
-          newDataUSD.address = nodeRow.querySelector(
+          // даем всем обьектам один и тот же адрес
+          const _address = nodeRow.querySelector(
             '.currencies-courses__branch-name',
           ).innerHTML;
-          newDataEUR.address = nodeRow.querySelector(
-            '.currencies-courses__branch-name',
-          ).innerHTML;
-          newDataRUB.address = nodeRow.querySelector(
-            '.currencies-courses__branch-name',
-          ).innerHTML;
+          newDataUSD.address =
+            newDataEUR.address =
+            newDataRUB.address =
+              _address;
+
+          // даем всем обьектам один и тот же координаты
+          const _coordinates = nodeRow
+            .querySelector('.currencies-courses__icon-cell')
+            .getAttribute('data-fillial-coords')
+            .replace(/\["|"]|\$/g, '');
+          newDataUSD.coord = newDataEUR.coord = newDataRUB.coord = _coordinates;
+
           const ranksOfRow = nodeRow.querySelectorAll(
             '.currencies-courses__currency-cell',
           );

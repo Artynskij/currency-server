@@ -32,6 +32,7 @@ export const getVTBRank = async (codename: string): Promise<IResponseAxios> => {
           selrate: '',
           address: 'main',
           type: 'main',
+          coord: 'main',
         };
         switch (item.code._text) {
           case 'eur':

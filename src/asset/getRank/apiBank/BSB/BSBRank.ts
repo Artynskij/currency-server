@@ -46,6 +46,7 @@ export const getBSBRank = async (codename: string) => {
           selrate: eurObj.buyAmount.toString(),
           address: 'main',
           type: 'main',
+          coord: 'main',
         },
         {
           codename: codename,
@@ -57,6 +58,7 @@ export const getBSBRank = async (codename: string) => {
           selrate: usdObj.buyAmount.toString(),
           address: 'main',
           type: 'main',
+          coord: 'main',
         },
         {
           codename: codename,
@@ -68,6 +70,7 @@ export const getBSBRank = async (codename: string) => {
           selrate: (rubObj.buyAmount * 100).toString(),
           address: 'main',
           type: 'main',
+          coord: 'main',
         },
       ];
       return returnedData;

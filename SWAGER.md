@@ -5,7 +5,7 @@ http://localhost:3000/bank/addbase - добавление банков в баз
 Для обновления:
 на локалке (1) на сервере (2)
 1. git add. / git commit -m 'something' / git push -u origin main - запушить с локалки на гит. 
-2. cd /var/www/html/jsoncur024.by/currency-server
+2. cd /var/www/kudapoiti.xyz/currency-server
 3. git pull - После Запулить на сервере. 
 4. npm run start:dev - и сбилдидь заново в папке с проектом. должно обновиться
 5. pm2 delete main:prod - удаляем прошлый запуск

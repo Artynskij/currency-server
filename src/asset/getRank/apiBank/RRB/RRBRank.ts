@@ -30,6 +30,7 @@ export const getRRBRank = async (codename: string): Promise<IResponseAxios> => {
           selrate: '',
           address: 'main',
           type: 'main',
+          coord: 'main',
         };
         switch (item._attributes.iso) {
           case 'EUR':

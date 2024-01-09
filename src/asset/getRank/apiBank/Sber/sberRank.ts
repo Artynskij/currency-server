@@ -29,6 +29,7 @@ export const getSberRank = async (codename: string) => {
           selrate: '',
           address: 'main',
           type: 'main',
+          coord: 'main',
         };
         // if (item.codeTo._text === 'BYN' && item.cacheless._text === '0') {
         switch (item.iso) {

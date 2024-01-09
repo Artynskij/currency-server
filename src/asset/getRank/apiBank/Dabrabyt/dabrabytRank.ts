@@ -32,6 +32,7 @@ export const getDabrabytRank = async (
           selrate: ' ',
           address: 'main',
           type: 'main',
+          coord: 'main',
         };
         switch (item._attributes.iso) {
           case 'EUR':

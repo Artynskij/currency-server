@@ -30,6 +30,7 @@ export const getParitetRank = async (codename: string) => {
         selrate: '',
         address: 'main',
         type: 'main',
+        coord: 'main',
       };
       const newDataEUR: IRateInBd = {
         codename: codename,
@@ -41,6 +42,7 @@ export const getParitetRank = async (codename: string) => {
         selrate: '',
         address: 'main',
         type: 'main',
+        coord: 'main',
       };
       const newDataRUB: IRateInBd = {
         codename: codename,
@@ -52,6 +54,7 @@ export const getParitetRank = async (codename: string) => {
         selrate: '',
         address: 'main',
         type: 'main',
+        coord: 'main',
       };
       const block = dom.window.document.querySelector('.courses-table');
 

@@ -15,6 +15,7 @@ export interface IRateInBd {
   seliso: string;
   type: string;
   address: string;
+  coord: string;
 }
 
 export interface IMessageStatus {

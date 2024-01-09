@@ -40,6 +40,7 @@ export const getBelagroRank = async (codename: string) => {
           selrate: '',
           address: 'main',
           type: 'main',
+          coord: 'main',
         };
         switch (item.CharCode._text) {
           case 'EUR':

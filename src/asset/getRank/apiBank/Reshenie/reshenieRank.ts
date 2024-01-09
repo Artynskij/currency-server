@@ -33,6 +33,7 @@ export const getReshenieRank = async (
         selrate: '',
         address: 'main',
         type: 'main',
+        coord: 'main',
       };
       const transformDataUSD: IRateInBd = {
         codename: codename,
@@ -44,6 +45,7 @@ export const getReshenieRank = async (
         selrate: '',
         address: 'main',
         type: 'main',
+        coord: 'main',
       };
       const transformDataRUB: IRateInBd = {
         codename: codename,
@@ -55,6 +57,7 @@ export const getReshenieRank = async (
         selrate: '',
         address: 'main',
         type: 'main',
+        coord: 'main',
       };
 
       res.map((item) => {

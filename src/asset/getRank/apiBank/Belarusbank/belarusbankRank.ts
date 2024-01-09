@@ -31,6 +31,7 @@ export const getBelarusbankRank = async (
           selrate: res.EUR_in,
           address: 'main',
           type: 'main',
+          coord: 'main',
         },
         {
           codename: codeName,
@@ -42,6 +43,7 @@ export const getBelarusbankRank = async (
           selrate: res.USD_in,
           address: 'main',
           type: 'main',
+          coord: 'main',
         },
         {
           codename: codeName,
@@ -53,6 +55,7 @@ export const getBelarusbankRank = async (
           selrate: res.RUB_in,
           address: 'main',
           type: 'main',
+          coord: 'main',
         },
         // {
         //   codename: codeName,

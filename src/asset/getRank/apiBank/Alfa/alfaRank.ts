@@ -25,6 +25,7 @@ export const getAlfaRank = async (codename: string) => {
           selrate: ' ',
           address: 'main',
           type: 'main',
+          coord: 'main',
         };
         newData.codename = codeName;
         newData.buyiso = item.buyIso;

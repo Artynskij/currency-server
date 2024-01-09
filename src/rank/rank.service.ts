@@ -119,6 +119,7 @@ export class RankService {
               eur: { selrate: '', buyrate: '', dateUpdate: '' },
               rub: { selrate: '', buyrate: '', dateUpdate: '' },
             },
+            coord: item.coord,
           };
           switch (item.seliso) {
             case 'EUR':

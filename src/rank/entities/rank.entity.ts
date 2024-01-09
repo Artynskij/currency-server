@@ -20,4 +20,6 @@ export class Rank extends Model {
   type: string;
   @Column
   address: string;
+  @Column
+  coord: string;
 }
