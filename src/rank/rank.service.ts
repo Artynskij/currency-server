@@ -1,10 +1,10 @@
 import { BankService } from './../bank/bank.service';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Cron } from '@nestjs/schedule';
 
-import { CreateRankDto } from './dto/create-rank.dto';
-import { UpdateRankDto } from './dto/update-rank.dto';
+import { CreateRankDto, errorCreate } from './dto/create-rank.dto';
+import { UpdateRankDto, errorUpdate } from './dto/update-rank.dto';
 
 import { Rank } from './entities/rank.entity';
 
@@ -25,20 +25,6 @@ export class RankService {
     const response = await this.callingUpdateRates();
     const date = new Date();
     console.log(`auto update : ${date}`);
-  }
-  // not used
-  async create(createRankDto: CreateRankDto): Promise<Rank> {
-    if (!createRankDto.buyrate && !createRankDto.selrate) {
-      return;
-    }
-    const rank = await this.rankModel.create({ ...createRankDto });
-    return rank.save();
-  }
-  // not used
-  async findAll() {
-    const ranks = await this.rankModel.findAll();
-
-    return ranks;
   }
   // get byn
   async findByn() {
@@ -180,17 +166,134 @@ export class RankService {
       data: promiseData,
     };
   }
-  // not used
-  async findOne(id: number): Promise<Rank> {
-    const rank = await this.rankModel.findOne({ where: { id } });
+  async findOne(codename: string): Promise<Rank[]> {
+    const rank = await this.rankModel.findAll({ where: { codename } });
     return rank;
   }
   // not used
-  async update(id: string, updateRankDto: UpdateRankDto) {
+  async findAll() {
+    const ranks = await this.rankModel.findAll();
+    return ranks;
+  }
+
+  async create(createRankDto: CreateRankDto): Promise<Rank | errorCreate> {
+    function errorCreate(mess: string, example?: Rank) {
+      const errorMessage: errorCreate = {
+        message: 'Что-то пошло не так.',
+        obj: createRankDto,
+        error: mess,
+        forExample: example,
+      };
+      if (!createRankDto.buyrate) {
+        errorMessage.error += ' buyrate';
+      }
+      if (!createRankDto.selrate) {
+        errorMessage.error += ' selrate';
+      }
+      if (!createRankDto.codename) {
+        errorMessage.error += ' codename';
+      }
+      if (!createRankDto.seliso) {
+        errorMessage.error += ' seliso';
+      }
+      if (!createRankDto.name) {
+        errorMessage.error += ' name';
+      }
+      return errorMessage;
+    }
+    function checkData(data: CreateRankDto) {
+      const newData: CreateRankDto = {
+        address: data.address || 'custom',
+        buyiso: data.buyiso || 'BYN',
+        buyrate: data.buyrate,
+        codename: data.codename,
+        coord: data.coord || 'custom',
+        name: data.name,
+        quantity: data.quantity || 1,
+        seliso: data.seliso,
+        selrate: data.selrate,
+        type: data.type || 'custom',
+      };
+      return newData;
+    }
+    if (
+      !createRankDto.buyrate ||
+      !createRankDto.selrate ||
+      !createRankDto.codename ||
+      !createRankDto.seliso ||
+      !createRankDto.name
+    ) {
+      const example = await this.rankModel.findOne({
+        where: { buyiso: 'BYN' },
+      });
+      return errorCreate('Не хватает :', example);
+    }
+    const trueBank = await this.bankService.findByName(createRankDto.codename);
+    if (!trueBank) {
+      return errorCreate(
+        `${createRankDto.codename}. Нету такого банка в базе данных.`,
+      );
+    }
+    const rank = await this.rankModel.create({ ...checkData(createRankDto) });
+    return rank.save();
+  }
+
+  async update(
+    id: string,
+    updateRankDto: UpdateRankDto,
+  ): Promise<{ oldData: Rank; newData: Rank } | errorUpdate> {
+    function errorUpdate(example: Rank) {
+      const errorMessage: errorUpdate = {
+        message: 'Что-то пошло не так.',
+        obj: updateRankDto,
+        error: 'Не хватает :',
+        forExample: example,
+      };
+      if (!updateRankDto.buyrate) {
+        errorMessage.error += ' buyrate';
+      }
+      if (!updateRankDto.selrate) {
+        errorMessage.error += ' selrate';
+      }
+      if (!updateRankDto.codename) {
+        errorMessage.error += ' codename';
+      }
+      if (!updateRankDto.seliso) {
+        errorMessage.error += ' seliso';
+      }
+      if (!updateRankDto.name) {
+        errorMessage.error += ' name';
+      }
+      return errorMessage;
+    }
+    if (
+      !updateRankDto.buyrate &&
+      !updateRankDto.selrate &&
+      !updateRankDto.codename &&
+      !updateRankDto.seliso &&
+      !updateRankDto.name
+    ) {
+      const example = await this.rankModel.findOne({
+        where: { buyiso: 'BYN' },
+      });
+      return errorUpdate(example);
+    }
+    await this.rankModel.update(updateRankDto, {
+      where: {
+        codename: updateRankDto.codename,
+        seliso: updateRankDto.seliso,
+        address: updateRankDto.address || 'custom',
+      },
+    });
+
     const oldRank = await this.rankModel.findOne({ where: { id } });
     await this.rankModel.update(updateRankDto, { where: { id } });
     const updatedRank = await this.rankModel.findOne({
-      where: { id },
+      where: {
+        codename: updateRankDto.codename,
+        seliso: updateRankDto.seliso,
+        address: updateRankDto.address || 'custom',
+      },
     });
     return {
       oldData: oldRank,
@@ -198,8 +301,16 @@ export class RankService {
     };
   }
   // not used
-  remove(id: number) {
-    return `This action removes a #${id} rank`;
+  async remove(id: number) {
+    const rank = await this.rankModel.findOne({ where: { id } });
+    if (!rank) {
+      return 'такого курса не существует';
+    }
+    await rank.destroy();
+    return {
+      rank: rank,
+      message: 'банк успешно удален',
+    };
   }
 
   async callingUpdateRates() {

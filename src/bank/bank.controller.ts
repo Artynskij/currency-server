@@ -29,6 +29,10 @@ export class BankController {
     return this.bankService.findAll();
   }
 
+  @Get(':name')
+  findByName(@Param('name') name: string) {
+    return this.bankService.findByName(name);
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.bankService.findOne(+id);

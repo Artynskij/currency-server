@@ -10,3 +10,11 @@ export class CreateBankDto {
   @IsNotEmpty()
   readonly idbank: number;
 }
+export class errorCreate {
+  @IsNotEmpty()
+  message: string;
+  @IsNotEmpty()
+  error: string;
+  @IsNotEmpty()
+  obj: CreateBankDto;
+}

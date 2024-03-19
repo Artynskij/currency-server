@@ -33,9 +33,9 @@ export class RankController {
     return this.rankService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.rankService.findOne(+id);
+  @Get(':codename')
+  findOne(@Param('codename') codename: string) {
+    return this.rankService.findOne(codename);
   }
 
   @Patch(':id')
