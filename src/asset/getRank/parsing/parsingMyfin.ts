@@ -177,8 +177,6 @@ export const parsingMyfin = async () => {
 
       banksMyfin.map((item) => {
         const newItem = getRankRowMain(item);
-        console.log(`${newItem} - elem`);
-        console.log(item.name);
         if (!newItem) return;
         const newItemFilial = getRankFilials(item);
 

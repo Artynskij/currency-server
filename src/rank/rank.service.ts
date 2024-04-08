@@ -320,7 +320,7 @@ export class RankService {
     );
 
     if (!returnRequestParsingMyfin.error) {
-      // console.log(returnRequestParsingMyfin);
+      console.log(returnRequestParsingMyfin);
       return returnRequestParsingMyfin;
     }
     const requestApi = await Promise.all(
