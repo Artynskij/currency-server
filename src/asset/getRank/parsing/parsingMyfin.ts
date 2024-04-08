@@ -65,6 +65,7 @@ export const parsingMyfin = async () => {
           '.currencies-courses__currency-cell',
         );
         if (!spans) return;
+
         const spansText: string[] = [];
         spans.forEach((item, index) => {
           switch (index) {
@@ -176,8 +177,11 @@ export const parsingMyfin = async () => {
 
       banksMyfin.map((item) => {
         const newItem = getRankRowMain(item);
-        const newItemFilial = getRankFilials(item);
+        console.log(`${newItem} - elem`);
+        console.log(item.name);
         if (!newItem) return;
+        const newItemFilial = getRankFilials(item);
+
         updatedBanks.push(newItem[0].codename);
         returnedRates.push(...newItem);
         returnedRates.push(...newItemFilial);

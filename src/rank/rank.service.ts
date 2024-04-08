@@ -320,7 +320,7 @@ export class RankService {
     );
 
     if (!returnRequestParsingMyfin.error) {
-      console.log(returnRequestParsingMyfin);
+      // console.log(returnRequestParsingMyfin);
       return returnRequestParsingMyfin;
     }
     const requestApi = await Promise.all(
@@ -330,8 +330,8 @@ export class RankService {
       }),
     );
 
-    console.log(returnRequestParsingMyfin.error);
-    console.log(requestApi);
+    // console.log(returnRequestParsingMyfin.error);
+    // console.log(requestApi);
     return requestApi;
   }
   // отдельный функции для красоты
