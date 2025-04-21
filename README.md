@@ -5,4 +5,4 @@
 
 ## Разработка
 
-Основной код находится в ветке [`project-code`](https://github.com/Artynskij/places/tree/dev)
+Основной код находится в ветке [`project-code`](https://github.com/Artynskij/currency-server/tree/dev)
